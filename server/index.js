@@ -10,6 +10,8 @@ import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
 import User from "./models/User.js";
+import path from 'path';
+
 import {
   dataUser,
   dataProduct,
@@ -24,7 +26,11 @@ import Transaction from "./models/Transaction.js";
 import OverallStat from "./models/OverallStat.js";
 import AffiliateStat from "./models/AffiliateStat.js";
 
+
 dotenv.config();
+const __dirname = path.resolve();
+
+
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -56,3 +62,10 @@ mongoose
     });
   })
   .catch((error) => console.log(error.message));
+
+
+  app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+})
